@@ -1,8 +1,10 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Data
 {
     //Use Newtonsoft to create a class for the JSON data

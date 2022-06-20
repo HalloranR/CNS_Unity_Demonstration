@@ -1,4 +1,6 @@
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,8 +10,11 @@ public class WebRequest : MonoBehaviour
     [Header("URL")]
     [SerializeField] string url;
 
+    [Header("DataPoint Prefab")]
+    [SerializeField] GameObject spawnObject;
+
     [Header("JSON elements")]
-    public Data data;
+    [SerializeField] public Data[] data;
 
     // Start is called before the first frame update
     void Start()
@@ -43,13 +48,50 @@ public class WebRequest : MonoBehaviour
             //display the text of the json
             Debug.Log(www.downloadHandler.text);
 
-            //Call to the Json Converter to change teh data
-            //data = JsonConvert.DeserializeObject<Data>(www.downloadHandler.text);
+            //call the json helper to take the array and turn it into a list of type data
+            data = JsonConvert.DeserializeObject<Data[]>(www.downloadHandler.text);
+
+            //Pass data to a helper inorder to instantiate the nodes to look at in the inspector
+            SpawnData(data);
         }
         else
         {
             //display the error response
             Debug.Log($"Failed: {www.error}");
+        }
+    }
+
+    /// <summary>
+    /// Helper function that loops through the Data list and spawns in GameObjects
+    /// The func then copies the data the the points script attached to the gameobject
+    /// </summary>
+    /// <param name="jlist"></param>
+    private void SpawnData(Data[] jlist)
+    {
+        foreach (Data point in jlist)
+        {
+            //spawn the prefab in scene
+            GameObject creation = Instantiate(spawnObject, new Vector3(0, 0, 0), Quaternion.identity);
+
+            //get the points script
+            Points pScript = creation.GetComponent<Points>();
+
+            //convert all the data from a class to the points script
+            pScript.Id = point.Id;
+            pScript.Type = point.Type;
+
+            pScript.representation_of = point.representation_of;
+            pScript.reference_organ = point.reference_organ;
+            pScript.scenegraph = point.scenegraph;
+            pScript.scenegraphNode = point.scenegraphNode;
+            pScript.transformMatrix = point.transformMatrix;
+            pScript.color = point.color;
+            pScript.opacity = point.opacity;
+            pScript.unpickable = point.unpickable;
+            pScript._lighting = point._lighting;
+            pScript.zoomBasedOpacity = point.zoomBasedOpacity;
+            pScript.entityId = point.entityId;
+            pScript.ccf_annotations = point.ccf_annotations;
         }
     }
 }

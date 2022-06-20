@@ -312,6 +312,10 @@ PrefabInstance:
       propertyPath: url
       value: 'https://ccf-api.hubmapconsortium.org/v1/scene '
       objectReference: {fileID: 0}
+    - target: {fileID: -67476196693228598, guid: 284e00a575e59df4092c37ab035ec7dc, type: 3}
+      propertyPath: spawnObject
+      value: 
+      objectReference: {fileID: 7414659595468428953, guid: bec2066eb37e54c43b9e0f6b41b9b157, type: 3}
     - target: {fileID: 5203939580559411600, guid: 284e00a575e59df4092c37ab035ec7dc, type: 3}
       propertyPath: m_Name
       value: Cube
